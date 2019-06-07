@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from "react";
-import TodoItem from "../components/TodoItem";
+import React, { Component, Fragment } from "react";
+import TodoItem from "./TodoItem";
 import "../style/style.css";
 class TodoList extends Component {
   constructor(props) {
@@ -22,18 +22,19 @@ class TodoList extends Component {
           <input
             id="insertArea"
             value={this.state.inputValue}
-            onChange={this.handleInputChange}
+            onChange={this.handleInputChange.bind(this)}
             className="input"
+            ref={(input) => { this.input = input }}
           />
-          <button onClick={this.handleButtonClick}>提交</button>
+          <button onClick={this.handleButtonClick.bind(this)}>提交</button>
         </div>
-        <ul>{this.getTodoItem()}</ul>
+        <ul ref={(ul) => { this.ul = ul }}>{this.getTodoItem()}</ul>
       </Fragment>
     );
   }
 
   //输入框可以输入
-  handleInputChange = e => {
+  handleInputChange = (e) => {
     //target对应的是绑定的DOM节点
     //console.log(this);
 
@@ -42,7 +43,11 @@ class TodoList extends Component {
 
     //this.setState可以改变state的值
     const value = e.target.value;
-    this.setState(() => ({inputValue: value}));
+    //console.log(this.input);
+
+    // 这里可以用ref引用的input，但是不建议这么用
+    //const value = this.input.value;
+    this.setState(() => ({ inputValue: value }));
     // this.setState({
     //   inputValue: e.target.value
     // });
@@ -64,6 +69,9 @@ class TodoList extends Component {
         list: [...preState.list, preState.inputValue],
         inputValue: ""
       };
+    }, () => {
+      // this.setState是一个异步操作，这里是一个执行完成后的回调
+      console.log(this.ul.querySelectorAll('li').length);
     });
     // this.setState({
     //   list: [...this.state.list, this.state.inputValue],
@@ -77,7 +85,7 @@ class TodoList extends Component {
     this.setState(prevState => {
       const list = [...prevState.list];
       list.splice(index, 1);
-      return {list};
+      return { list };
     });
     //新版的react不建议以下做法
     // this.setState({
