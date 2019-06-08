@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
+import axios from "axios";
 import TodoItem from "./TodoItem";
 import "../style/style.css";
+import '../mock/mock'
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,45 @@ class TodoList extends Component {
       list: []
     };
   }
+
+  componentDidMount = () => {
+    //console.log("componentDidMount");
+
+    axios.get('/api/get  Data').then((res) => {
+      console.log(res.data);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  componentWillMount = () => {
+    //console.log("componentWillMount")
+  }
+
+  shouldComponentUpdate = () => {
+    //console.log("shouldComponentUpdate")
+    return true;
+  }
+  componentWillUpdate = () => {
+    //console.log("componentWillUpdate")
+  }
+
+  componentDidUpdate = () => {
+    //console.log("componentDidUpdate")
+  }
+
+  // componentWillUnmount = () => {
+  //   console.log("componentWillUnmount")
+  // }
+
+  // componentWillReceiveProps = () => {
+  //   console.log("componentWillReceiveProps")
+  // }
+
   render() {
+
+    console.log("render...")
+
     return (
       // return的内容必须被一个标签包裹，或者Fragment
       <Fragment>
@@ -71,7 +111,7 @@ class TodoList extends Component {
       };
     }, () => {
       // this.setState是一个异步操作，这里是一个执行完成后的回调
-      console.log(this.ul.querySelectorAll('li').length);
+      //console.log(this.ul.querySelectorAll('li').length);
     });
     // this.setState({
     //   list: [...this.state.list, this.state.inputValue],

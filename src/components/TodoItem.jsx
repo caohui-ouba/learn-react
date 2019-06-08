@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 class TodoItem extends Component {
   render() {
+    console.log("child render");
     const { content, test } = this.props;
     const { index } = this.props;
     return (
@@ -11,7 +12,23 @@ class TodoItem extends Component {
       </li>
     );
   }
+  componentWillReceiveProps = () => {
+    //console.log("child componentWillReceiveProps")
+  }
 
+
+  componentWillUnmount = () => {
+    //console.log("child componentWillUnmount")
+  }
+
+  /**
+    * nextProps 将要发生的变化
+    * nextState 将要发生的变化
+    */
+  shouldComponentUpdate = (nextProps, nextState) => {
+    //这样做，当父组件更新后，子组件可以选择性的更新，而不是每次都更新
+    return nextProps.content !== this.props.content;
+  }
   handleItemDelete = index => {
     const { handleItemDelete } = this.props;
     handleItemDelete(index);

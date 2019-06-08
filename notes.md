@@ -79,3 +79,23 @@
 #### react中Ref的使用
 
 ref可以通过lambda函数获取页面上的DOM节点
+
+#### react的生命周期函数
+
+生命周期函数指的是在某一个时刻组件会自动执行的函数。
+
+- render是一个生命周期函数
+- componentWillMount 组件将要挂载到页面上的时候会被执行
+- componentDidMount 组件挂在之后执行 ，通常在这个方法里写Ajax请求，这个函数只在组件挂载在节点之后执行一次
+- shouldComponentUpdate 当数据（State，Props）被改变的时候，执行
+- componentWillUpdate 组件将要被更新，只有shouldComponentUpdate返回true的时候才执行。
+- componentDidUpdate 组件更新结束之后会被执行
+- componentWillReceiveProps 当一个组件要从父组件接收参数，执行时间是父组件的render被重新执行了之后，子组件的componentWillReceiveProps会执行
+
+#### React发送Ajax请求
+
+Axios库发送ajax请求， yarn add axios
+
+#### MockJs 进行数据接口的模拟
+
+dsass
