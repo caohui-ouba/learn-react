@@ -195,7 +195,7 @@ UI组件：傻瓜组件，只有标签渲染
 
 TodoList抽离出来UI组件
 
-```js
+```jsx
 import React, { Component, Fragment } from 'react'
 import 'antd/dist/antd.css'
 import { Input, Button, List } from 'antd';
@@ -231,7 +231,7 @@ export default class TodoListUI extends Component {
 
 原来的组件：
 
-```js
+```jsx
 render() {
     return (
       <TodoListUI
