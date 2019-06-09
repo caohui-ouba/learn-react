@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
+import { CSSTransition } from 'react-transition-group';
 import './style/app.css';
+
 class App extends Component {
 
   constructor(args) {
@@ -13,9 +15,20 @@ class App extends Component {
     //JSX语法,组件开头必须是大写字母
     return (
       <Fragment>
-        <div className={this.state.show ? "show" : "hidden"}>hello world</div>
+        <CSSTransition
+          in={this.state.show}
+          timeout={1000}
+          classNames='fade'
+          onEntered={(el) => { el.style.color = 'blue' }}
+          appear={true}
+        >
+          <div>hello world</div>
+        </CSSTransition>
         <button onClick={this.toggle}>toggle</button>
-      </Fragment>
+
+        <br></br>
+
+      </Fragment >
     );
   }
 

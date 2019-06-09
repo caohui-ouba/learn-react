@@ -124,6 +124,7 @@ class TodoList extends Component {
     // state不允许（强烈不建议）我们做任何改变，只能拷贝之后再改
     this.setState(prevState => {
       const list = [...prevState.list];
+
       list.splice(index, 1);
       return { list };
     });

@@ -98,4 +98,151 @@ Axios库发送ajax请求， yarn add axios
 
 #### MockJs 进行数据接口的模拟
 
-dsass
+#### React使用CSS3实现动画
+
+#### React使用react-transition-group实现动画
+
+#### Redux数据层框架
+
+redux = reducer + flux
+
+解决子组件向多个父组件传值的问题
+
+工作流程：
+
+- React Component 需求数据者 。
+- Action Creators 数据请求，dispatch(action)
+- Store 数据仓库 。
+- Reducers 数据仓库管理员。
+
+##### 先编写Reducer，写回调函数
+
+其实就是吧新的store中的state返回给store
+
+```js
+const defaultState = {
+  inputValue: '',
+  list: []
+}
+export default (state = defaultState, action) => {
+  return state;
+}
+```
+
+##### 再编写Store
+
+```js
+import { createStore } from 'redux'
+import reducer from './reducer'
+/**
+ * 把Reducer传递给store
+ */
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+export default store;
+```
+
+import 将reducer引进，在初始化store的时候，要吧reducer放进去
+
+##### 在组件中先订阅store的改变
+
+```js
+store.subscribe(this.handleStoreChange);
+```
+
+##### ActionTypes拆分
+
+把所有的action的type的值，放到一个文件中，方便管理和维护
+
+新建一个文件 action-state.jsx
+
+```js
+export const CHANGE_INPUT_VALUE = 'change_input_value';
+export const ADD_ITEM = 'add_item'
+export const DELETE_ITEM = 'delete_item'
+```
+
+##### ActionCreator创建action
+
+创建一个工厂类action-creator
+
+```js
+import { DELETE_ITEM, CHANGE_INPUT_VALUE, ADD_ITEM } from './action-state';
+
+export const deleteItemAction = (index) => ({
+  type: DELETE_ITEM,
+  index
+});
+
+export const changeInputAction = (value) => ({
+  type: CHANGE_INPUT_VALUE,
+  value
+});
+
+export const addItemAction = () => ({
+  type: ADD_ITEM
+});
+```
+
+在组件想要获得action的时候，可以用actionCreator的方法获取，有利于维护
+
+### React拆分UI组件和容器组件
+
+UI组件：傻瓜组件，只有标签渲染
+容器组件：聪明组件，控制逻辑
+
+TodoList抽离出来UI组件
+
+```js
+import React, { Component, Fragment } from 'react'
+import 'antd/dist/antd.css'
+import { Input, Button, List } from 'antd';
+
+export default class TodoListUI extends Component {
+  render() {
+    return (
+      <Fragment>
+        <div>
+          <Input
+            placeholder="todo info"
+            style={{ width: '300px', marginRight: '10px' }}
+            value={this.props.inputValue}
+            onChange={this.props.handleInputChange}
+          />
+          <Button
+            type="primary"
+            onClick={this.props.handleBtnClick}
+          >提交</Button>
+        </div>
+        <List
+          bordered
+          dataSource={this.props.list}
+          renderItem={(item, index) => (<List.Item onClick={() => { this.props.handleItemClick(index) }}>{item}</List.Item>)}
+          style={{ width: '300px', marginRight: '10px' }}
+        >
+        </List>
+      </Fragment>
+    )
+  }
+}
+```
+
+原来的组件：
+
+```js
+render() {
+    return (
+      <TodoListUI
+        inputValue={this.state.inputValue}
+        list={this.state.list}
+        handleInputChange={this.handleInputChange}
+        handleBtnClick={this.handleBtnClick}
+        handleItemClick={this.handleItemClick}
+      />
+    )
+  }
+```
+
+这样做让UI和控制逻辑分离，符合单一原则
