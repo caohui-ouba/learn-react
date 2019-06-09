@@ -1,8 +1,8 @@
 # React学习笔记
 
-成都市
+开启React
 
-## Temp 多少啊
+## 组件化编程
 
 ### 组件化 Component
 
