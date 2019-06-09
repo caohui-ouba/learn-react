@@ -246,3 +246,96 @@ render() {
 ```
 
 这样做让UI和控制逻辑分离，符合单一原则
+
+### 无状态组件
+
+不需要state，只要有props就可以，比如上面的TodoListUI可以改成
+
+```js
+import React, { Component, Fragment } from 'react'
+import 'antd/dist/antd.css'
+import { Input, Button, List } from 'antd';
+// 无状态组件
+const TodoListUI = (props) => {
+  return (
+    <Fragment>
+      <div>
+        <Input
+          placeholder="todo info"
+          style={{ width: '300px', marginRight: '10px' }}
+          va lue={this.props.inputValue}
+          onChange={this.props.handleInputChange}
+        />
+        <Button
+          type="primary"
+          onClick={this.props.handleBtnClick}
+        >提交</Button>
+      </div>
+      <List
+        bordered
+        dataSource={this.props.list}
+        renderItem={(item, index) => (<List.Item onClick={() => { this.props.handleItemClick(index) }}>{item}</List.Item>)}
+        style={{ width: '300px', marginRight: '10px' }}
+      >
+      </List>
+    </Fragment>
+  )
+}
+export default TodoListUI;
+```
+
+### redux中的中间件- Redux-thunk
+
+redux-thunk中间价可以让action是一个函数，而不是一个对象，这样。并且在dispatch这个action的时候，会自动的执行这个函数。
+
+因此我们可以吧组件中的异步操作，比如Ajax获取数据之类的，放到action中去处理。
+
+首先引入redux-thunk中间件，在初始化store的地方
+
+```jsx
+import { createStore, applyMiddleware, compose } from 'redux'
+import reducer from './reducer'
+//引入redux-thunk中间件
+import thunk from 'redux-thunk';
+
+/**
+ * 把笔记本传递给store
+ */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+const enhancer = composeEnhancers(
+  applyMiddleware(thunk)
+);
+const store = createStore(
+  reducer,
+  enhancer
+);
+export default store;
+```
+
+然后就可以愉快的使用了，我们先写一个action creator，返回一个类型为函数的action。
+
+```jsx
+/**
+ * redux-thunk让action可以是一个函数，这里就是返回一个函数
+ */
+export const getTodoList = () => {
+  return () => {
+    axios.get('/api/get/list').then((res) => {
+      //console.log(res.data)
+      const action = afterAjaxDataAction(res.data);
+      store.dispatch(action);
+    }).catch(e => (console.log(e)));
+  }
+}
+```
+
+然后在组件中调用这个creator
+
+```jsx
+componentDidMount = () => {
+    const action = getTodoList();
+    store.dispatch(action);
+}
+```
+
+componentDidMount中原本写的是调用ajax的异步操作，现在都放到action中了。在大型项目中便于维护。

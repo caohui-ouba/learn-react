@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import axios from "axios";
 import TodoItem from "./TodoItem";
 import "../style/style.css";
-import '../mock/mock'
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +14,7 @@ class TodoList extends Component {
   componentDidMount = () => {
     //console.log("componentDidMount");
 
-    axios.get('/api/get  Data').then((res) => {
+    axios.get('/api/getData').then((res) => {
       console.log(res.data);
     }).catch((error) => {
       console.log(error);

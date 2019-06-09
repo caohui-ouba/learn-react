@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 //import TodoList from "./components/TodoList";
 //import App from './App'
 import TodoList from './antd-components/TodoList'
-
+import './mock/mock'
 //PWA proggressive web application
 //断网可以访问网页，已存储
 //https协议的服务器上

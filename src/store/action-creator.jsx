@@ -1,6 +1,6 @@
-import { DELETE_ITEM, CHANGE_INPUT_VALUE, ADD_ITEM } from './action-state';
-
-
+import { DELETE_ITEM, CHANGE_INPUT_VALUE, ADD_ITEM, AFTER_AJAX } from './action-state';
+import store from '../store/index'
+import axios from 'axios'
 export const deleteItemAction = (index) => ({
   type: DELETE_ITEM,
   index
@@ -14,3 +14,21 @@ export const changeInputAction = (value) => ({
 export const addItemAction = () => ({
   type: ADD_ITEM
 });
+
+export const afterAjaxDataAction = (data) => ({
+  type: AFTER_AJAX,
+  data
+})
+
+/**
+ * redux-thunk让action可以是一个函数，这里就是返回一个函数
+ */
+export const getTodoList = () => {
+  return () => {
+    axios.get('/api/get/list').then((res) => {
+      //console.log(res.data)
+      const action = afterAjaxDataAction(res.data);
+      store.dispatch(action);
+    }).catch(e => (console.log(e)));
+  }
+}

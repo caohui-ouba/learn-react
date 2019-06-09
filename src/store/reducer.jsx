@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM, CHANGE_INPUT_VALUE } from './action-state';
+import { ADD_ITEM, DELETE_ITEM, CHANGE_INPUT_VALUE, AFTER_AJAX } from './action-state';
 const defaultState = {
   inputValue: '',
   list: []
@@ -15,16 +15,13 @@ export default (state = defaultState, action) => {
   if (action.type === CHANGE_INPUT_VALUE) {
     //不能直接改变state，需要拷贝一份改变
     newState.inputValue = action.value;
-    return newState;
   } else if (action.type === ADD_ITEM) {
     newState.list = [...state.list, state.inputValue];
-    return newState;
   } else if (action.type === DELETE_ITEM) {
     //删除
     newState.list.splice(action.value, 1)
-    return newState;
+  } else if (action.type === AFTER_AJAX) {
+    newState.list = action.data;
   }
-
-
-  return state;
+  return newState;
 }

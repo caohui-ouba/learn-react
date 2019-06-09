@@ -1,13 +1,3 @@
-[{
-        "name": "曹辉",
-        "age": 12
-    },
-    {
-        "name": "杨路",
-        "age": 11
-    },
-    {
-        "name": "余清波",
-        "age": 10
-    }
+[
+    "caohui", "yanglu", "yuqingbo"
 ]

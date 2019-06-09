@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import store from '../store/index'
-import { addItemAction, deleteItemAction, changeInputAction } from '../store/action-creator'
+import { getTodoList, addItemAction, deleteItemAction, changeInputAction, afterAjaxDataAction } from '../store/action-creator'
 import TodoListUI from '../ui/TodoListUI'
+import axios from 'axios'
 export default class TodoList extends Component {
 
   constructor(props) {
@@ -14,6 +15,20 @@ export default class TodoList extends Component {
     this.handleBtnClick = this.handleBtnClick.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
     store.subscribe(this.handleStoreChange);
+  }
+
+  componentDidMount = () => {
+    // axios.get('/api/get/list').then((res) => {
+    //   console.log(res.data)
+    //   this.handleAfterAjax(res.data);
+    // }).catch(e => (console.log(e)));
+
+    /**
+     * 这里用redux-thunk中间件，统一管理异步操作
+     */
+
+    const action = getTodoList();
+    store.dispatch(action);
   }
   render() {
     return (
@@ -52,5 +67,10 @@ export default class TodoList extends Component {
     console.log(index)
     const action = deleteItemAction(index)
     store.dispatch(action)
+  }
+
+  handleAfterAjax = (data) => {
+    const action = afterAjaxDataAction(data);
+    store.dispatch(action);
   }
 }
