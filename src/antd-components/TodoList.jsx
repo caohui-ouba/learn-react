@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import store from '../store/index'
-import { getTodoList, addItemAction, deleteItemAction, changeInputAction, afterAjaxDataAction } from '../store/action-creator'
+import { getInitList, getTodoList, addItemAction, deleteItemAction, changeInputAction, afterAjaxDataAction } from '../store/action-creator'
 import TodoListUI from '../ui/TodoListUI'
 import axios from 'axios'
 export default class TodoList extends Component {
@@ -27,8 +27,15 @@ export default class TodoList extends Component {
      * 这里用redux-thunk中间件，统一管理异步操作
      */
 
-    const action = getTodoList();
+    // const action = getTodoList();
+    // store.dispatch(action);
+
+    /**
+     * 利用saga中间价
+     */
+    const action = getInitList();
     store.dispatch(action);
+
   }
   render() {
     return (

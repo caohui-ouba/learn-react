@@ -1,4 +1,4 @@
-import { DELETE_ITEM, CHANGE_INPUT_VALUE, ADD_ITEM, AFTER_AJAX } from './action-state';
+import { GET_INIT_LIST, DELETE_ITEM, CHANGE_INPUT_VALUE, ADD_ITEM, AFTER_AJAX } from './action-state';
 import store from '../store/index'
 import axios from 'axios'
 export const deleteItemAction = (index) => ({
@@ -32,3 +32,11 @@ export const getTodoList = () => {
     }).catch(e => (console.log(e)));
   }
 }
+
+/**
+ * redux-saga
+ */
+
+export const getInitList = () => ({
+  type: GET_INIT_LIST
+});

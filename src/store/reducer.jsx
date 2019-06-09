@@ -21,6 +21,7 @@ export default (state = defaultState, action) => {
     //删除
     newState.list.splice(action.value, 1)
   } else if (action.type === AFTER_AJAX) {
+    console.log('after-ajax')
     newState.list = action.data;
   }
   return newState;

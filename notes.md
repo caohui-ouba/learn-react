@@ -339,3 +339,62 @@ componentDidMount = () => {
 ```
 
 componentDidMount中原本写的是调用ajax的异步操作，现在都放到action中了。在大型项目中便于维护。
+
+### redux-saga中间件的使用
+
+redux-saga中间件也是一种异步请求的管理工具
+
+首先引入redux-saga
+
+```jsx
+import { createStore, applyMiddleware, compose } from 'redux'
+import reducer from './reducer'
+//引入redux-saga
+import createSagaMiddleware from 'redux-saga';
+import todoSagas from './sagas';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+
+//saga中间件
+const sagaMiddleware = createSagaMiddleware();
+const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
+
+/**
+ * 把reducer和enhancer传递给store
+ */
+const store = createStore(
+  reducer,
+  enhancer
+);
+sagaMiddleware.run(todoSagas)
+export default store;
+```
+
+自己新建sages.jsx, generator函数
+
+```jsx
+import { takeEvery, put } from 'redux-saga/effects';
+import { GET_INIT_LIST } from './action-state'
+import { afterAjaxDataAction } from './action-creator';
+import axios from 'axios';
+function* getInitList() {
+  console.log('abc');
+  try {
+    const res = yield axios.get('/api/get/list');
+    const action = afterAjaxDataAction(res.data);
+    yield put(action);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+/**
+ * mySaga函数的takeEvery订阅了GET_INIT_LIST，每次store.dispatch的是GET_INIT_LIST类型的action，执行这里的getINitList函数。
+ */
+function* mySaga() {
+  yield takeEvery(GET_INIT_LIST, getInitList);
+}
+export default mySaga;
+```
+
+
