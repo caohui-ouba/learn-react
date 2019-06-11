@@ -1,3 +1,3 @@
-# learn reactgto
+# learn react
 
 学习 react
